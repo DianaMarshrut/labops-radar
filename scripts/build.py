@@ -1,8 +1,8 @@
 """Build distributables for the radar capsule.
 
 Produces:
-  dist/radar.zip            -- skill folder for upload to claude.ai.
-  chat-instruction-radar.md -- merged instruction for ChatGPT / DeepSeek.
+  dist/radar.zip       -- skill folder for upload to claude.ai.
+  chat-instruction.md  -- merged instruction for ChatGPT / Codex.
 
 Usage: python3 scripts/build.py
 """
@@ -25,20 +25,18 @@ ZIP_DATE = (2026, 1, 1, 0, 0, 0)
 
 RADAR_APPENDICES: list[tuple[str, str]] = [
     ("references/sources.md", "Приложение 1. Подключение почты, календаря и задач"),
-    ("references/schedule.md", "Приложение 2. Настройки один раз и сводка по расписанию"),
-    ("references/briefing-rules.md", "Приложение 3. Правила сводки"),
-    ("templates/briefing.md", "Приложение 4. Шаблон сводки"),
-    ("templates/settings.md", "Приложение 5. Шаблон блока «Настройки радара»"),
+    ("references/briefing-rules.md", "Приложение 2. Правила сводки"),
+    ("templates/briefing.md", "Приложение 3. Шаблон сводки"),
+    ("templates/settings.md", "Приложение 4. Шаблон блока «Настройки радара»"),
 ]
 RADAR_INTRO = [
     "# Инструкция для чата: капсула «Радар» от labopsai",
     "",
-    "Один раз: положи этот текст в проект ChatGPT (файлом или в инструкции) или вставь первым "
-    "сообщением в новый чат DeepSeek и напиши: «Работай по этой инструкции». Дальше — фраза "
-    "«радар» или задача по расписанию.",
+    "Добавь этот файл в проект ChatGPT или Codex (файлом или в инструкции) "
+    "и напиши: «Работай по инструкции из файлов проекта». Дальше — фраза «радар».",
     "",
     "Ты работаешь в обычном чате. Источники: встроенные коннекторы этого чата (если они есть), "
-    "ссылки Битрикс24, которые прислал пользователь, или текст, который он вставил. "
+    "подключение Битрикс24 через MCP (ключ — только в настройках, не в чате), файлы или текст, который он вставил. "
     "Других доступов к его почте, календарю и задачам у тебя нет. Работаешь только на чтение.",
 ]
 
@@ -93,11 +91,11 @@ def build_chat_text(skill_dir: Path, out: Path, intro: list[str],
 
 
 def build_radar_chat_instruction(out: Path) -> Path:
-    """Build chat-instruction-radar.md for ChatGPT / DeepSeek."""
+    """Build chat-instruction.md for ChatGPT / Codex."""
     return build_chat_text(RADAR_DIR, out, RADAR_INTRO, RADAR_APPENDICES)
 
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO, format="%(message)s")
     build_zip(RADAR_DIR, DIST / "radar.zip")
-    build_radar_chat_instruction(REPO / "chat-instruction-radar.md")
+    build_radar_chat_instruction(REPO / "chat-instruction.md")
